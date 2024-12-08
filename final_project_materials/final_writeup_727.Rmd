@@ -1,0 +1,63 @@
+---
+title: "Swing State Search Trends: Analyzing The Salience of Important Terms in the 2024 Election"
+author: "Greg O'Connell"
+date: "2024-12-07"
+output: pdf_document
+---
+
+# Intro
+
+For my final project, I wanted to the effectiveness of political ads in swing states. The 2024 election saw record numbers donors, of which most of the money given to each political party was used to campaign and run ads in swing states. It is hard to tell exactly what influenced a vote, what a voter is thinking about, or if particular ads were convincing enough to sway a vote to one side or the other, but Google search trends are a good proxy for what people are interested in or thinking about. If a voter sees a negative political ad and gets anxious about something or wants to learn more, it is reasonable to believe that they would google something about the topic to "do their own research". This landed my on my central research question, do people in swing states google search terms that appear in political ads or are relevant to political campaigns more than the average American? Or did the messaging not get through to these voters despite the massive amounts of ad spending?
+
+# Methodology
+
+I started off with two data sources, Google trends from the gtrendsr package, and demographic data about each state from the Census API. For search terms, I decided to use "abortion", "transgender", "Project 2025", "tariff", and "migrant crime". Abortion and transgender were both picked because it is the topic that each side respectively spent the most campaign money on for advertisements, Abortion ads for Dems and "Harris is for They/Them" ads for Republicans. I picked "Project 2025" and "Tariff" to be more policy oriented words for technical folks. Its likely the average voter wouldn't search these issues unless they were primed to, but these words are still central to the Republican party platform, and if Democrats messaging got through, seeing upticks in searches for these words would be a decent proxy. "Migrant Crime" was a search term that didn't pop up enough, its in the code, but I took it out of most of the graphing and analysis portions for lack of results.
+
+I used a 90 day period around the election, September 1st-December 1st. Though I didn't personally do this, one way to make the graphs look a bit less hectic would be to group the search terms into weekly averages, because google search terms vary widely day by day and it is reflected in the shape of the lines on my graphs.
+
+One other important note, I collected search trend data for the 7 swing states (GA, NC, PA, WI, MI, AZ, NV) as well as the US in general. Then I transformed the data from raw search results to the percent difference between a state's search results and the US at large. 
+
+# Geographic Groupings
+
+To make analysis a bit easier, I geographically sorted the swing states into their "regions", groupings I learned while working political consulting firm that worked on political ads. Generally the states were grouped into 3 types due to similarities in population, geographic location, and other demographic factors. These were the "Blue Wall" of the midwest, PA, WI and MI, the "South", GA and NC, and the "Sun Belt" of the Southwest NV and AZ.
+
+Census data was used to compare the states, and to my surprise they all have relatively similar median ages, incomes, and education levels. However, they did widely vary in race and ethnicity, with the South having a higher proportion of black people, the midwest having higher proportions of white people, and the Sunbelt having more hispanics. The proportions are shown in the figure below.
+
+![Obtained from Census API, circa 2022 ACS survey.](/Users/gregoconnell/Documents/GitHub/APAN-hw/surv727-dataviz/final_pngs/pie_char_swst_demo.png)
+
+# Search Results Data and Prelimary Findings
+
+The data shows a clear and statisitcally significant difference in the amount of searches foudn in swing states as opposed to the U.S. at large, but these effects are more nuanced when it is boiled to the more precise level, analyzing each specific term in each state. Below will be images of how often each search term popped up as opposed to the U.S. average, which is represented by the red line. The blue lines and the y axis represent the percentage difference between the swing states, and the U.S. as a whole
+
+![](/Users/gregoconnell/Documents/GitHub/APAN-hw/surv727-dataviz/final_pngs/abortion_combined_states_diff.png)
+![](/Users/gregoconnell/Documents/GitHub/APAN-hw/surv727-dataviz/final_pngs/Project_2025_combined_states_diff.png)
+
+![](/Users/gregoconnell/Documents/GitHub/APAN-hw/surv727-dataviz/final_pngs/tariff_combined_states_diff.png)
+![](/Users/gregoconnell/Documents/GitHub/APAN-hw/surv727-dataviz/final_pngs/transgender_combined_states_diff.png)
+
+# Outliers and Analysis
+
+3 of the 4 relevant search terms can visually be seen to appear more rather than less than the U.S. average on these bar graphs, with the exception of the word "tariff". This was an interesting finding, as tariffs were a major part of Trump's economic platform, however, it is a ore technical term that people wouldn't do additional research on unless primed to do so. This shows a major opportunity for opponents of Trump's protectionist agenda, as even if voters tend to prefer him on the economy (as according to most public opinion polls), political ads on tariffs could've influenced google searches, opinions, and possibly votes. Its clear ads on abortion or transgender likely had at least a correlative if not causal impact on searches for terms in these states, and its possible upon learning more about what tariffs would do to the US economy (perhaps if its framed as a national sales tax), voters may have been influenced that Trump was not the better choice on the economy.
+
+These graphs get more interesting when they are split up by region, as the Sunbelt consistently lags behind the U.S. average for a lot of these search terms. Some possible explanations could be the amount of ads or google searches done in Spanish in these states with much larger Hispanic populations, less ad focus on these states (as most paths to victory went through the midwest or the south rather than the southwest), or random variability in search trends by state.
+
+![](/Users/gregoconnell/Documents/GitHub/APAN-hw/surv727-dataviz/final_pngs/Project_2025_grouped_percentage_diff.png)
+![](/Users/gregoconnell/Documents/GitHub/APAN-hw/surv727-dataviz/final_pngs/abortion_grouped_percentage_diff.png)
+![](/Users/gregoconnell/Documents/GitHub/APAN-hw/surv727-dataviz/final_pngs/transgender_grouped_percentage_diff.png)
+![](/Users/gregoconnell/Documents/GitHub/APAN-hw/surv727-dataviz/final_pngs/tariff_grouped_percentage_diff.png)
+
+# Significance Testing
+
+Besides the visual comparison of the google search trends lines copared to the U.S. average search line, I also ran difference of means tests for statistical significance to see if the mean value for these searches was different for each state in a mathematical sense. In most cases (25/28, 4 terms in 7 states is 28 possible outcomes) there was a statistically significant difference between swing states and the U.S. at large with p<.05. Not all of the results were positive, and in some cases there was a statistically significant value proving the mean was lower than the U.S. average in some states for some terms. Generally speaking, the negative t values were lower than the positive ones, and the most of the t values were positive. Below is a figure showing the count of positive t values for each term and each state as opposed to the negative or non-significant terms.
+
+![Provides a count of positive vs. negative relationships between search term average and swing state average. ](/Users/gregoconnell/Documents/GitHub/swing_state_search_trends/final_pngs/state_count_plot.png)
+
+![This compares the average strength in t values. ](/Users/gregoconnell/Documents/GitHub/swing_state_search_trends/final_pngs/t_value_strength_plot.png)
+
+# Conclusion and Further Research
+
+By using google search trends as a proxy for issue salience and census data to contextualize our demographic knowledge about swing states, one can see a clear difference between what swing state residents google search as opposed to the average American. This kind of data could be easily paired with data from public opinion polls on these issues, voter file data, or ANES surveys to get a more full picture of what implications it could have for paid media strategy in future elections. Overall its clear that despite Democrats frustration with an election loss, their paid media messaging did seem to get through to a lot of people, and at the very least is correlated for an uptick in searches about each topic they advertised on. Even if this doesn't sway votes, it means that paid media strategies are still an effective tool at putting issues into the minds of voters, now it is more important to try to find what issues could sway a vote one way or another.
+
+In the code provided there are loops that create png graphs for lots of imaginable combinations of state groupings. These were excluded from the write up for brevity, but may be of interest to people looking to study a specific state. Please reach out to me with any questions about this study or the data at greg.oconnell.work@gmail.com. 
+
+

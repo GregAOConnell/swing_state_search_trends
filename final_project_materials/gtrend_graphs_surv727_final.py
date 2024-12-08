@@ -284,6 +284,10 @@ data = pd.read_csv(file_path)
 # Filter out the "migrant crime" keyword
 data = data[data['keyword'] != 'migrant crime']
 
+# Define save path for plots
+save_path = '/Users/gregoconnell/Documents/GitHub/APAN-hw/surv727-dataviz/final_pngs'  # Replace with your desired directory
+os.makedirs(save_path, exist_ok=True)  # Create directory if it doesn't exist
+
 # Create categories for counting states
 data['category'] = data.apply(
     lambda row: 'Positive' if row['t_stat'] > 0 and row['significant']
@@ -320,7 +324,11 @@ ax.set_ylabel("Number of States")
 plt.xticks(rotation=45, ha='right')
 plt.tight_layout()
 plt.show()
-
+# Save plot as PNG
+count_plot_path = os.path.join(save_path, "state_count_plot.png")
+plt.savefig(count_plot_path, dpi=300)
+print(f"State count plot saved at {count_plot_path}")
+plt.close()
 # ---- Plot 2: Strength of T-Values ----
 # Create a pivot table for the strength of t-values
 t_value_strength = data.pivot_table(
@@ -363,3 +371,8 @@ ax.legend(handles, legend_order, title="Category", fontsize=10)
 
 plt.tight_layout()
 plt.show()
+# Save plot as PNG
+strength_plot_path = os.path.join(save_path, "t_value_strength_plot.png")
+plt.savefig(strength_plot_path, dpi=300)
+print(f"T-value strength plot saved at {strength_plot_path}")
+plt.close()
